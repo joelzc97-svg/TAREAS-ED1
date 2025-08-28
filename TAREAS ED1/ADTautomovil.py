@@ -1,4 +1,3 @@
-# ---- Definición de la clase Automovil ----
 class Automovil:
     def __init__(self, marca, modelo, anio):
         self.__marca = marca
@@ -92,3 +91,4 @@ if __name__ == "__main__":
     lista_dinamica.eliminar(0)
     print("Después de eliminar:")
     lista_dinamica.mostrar()
+
