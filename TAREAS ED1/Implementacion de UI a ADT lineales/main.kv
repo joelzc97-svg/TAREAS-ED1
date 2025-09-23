@@ -1,0 +1,146 @@
+<MainView>:
+    orientation: 'vertical'
+    padding: 20
+    spacing: 20
+    
+    Label:
+        text: 'Calculadora de Conjuntos y Polinomios'
+        font_size: 24
+        size_hint_y: None
+        height: 50
+        color: 0, 0, 0, 1
+    
+    # Sección de Conjuntos
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint_y: 0.4
+        spacing: 10
+        
+        Label:
+            text: 'OPERACIONES CON CONJUNTOS'
+            font_size: 18
+            size_hint_y: None
+            height: 30
+            color: 0, 0, 0, 1
+        
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: 40
+            spacing: 10
+            
+            Label:
+                text: 'Conjunto A:'
+                size_hint_x: 0.2
+                color: 0, 0, 0, 1
+            
+            TextInput:
+                id: conjunto_a
+                hint_text: 'Ej: 1,2,3,4'
+                size_hint_x: 0.3
+                multiline: False
+            
+            Label:
+                text: 'Conjunto B:'
+                size_hint_x: 0.2
+                color: 0, 0, 0, 1
+            
+            TextInput:
+                id: conjunto_b
+                hint_text: 'Ej: 3,4,5,6'
+                size_hint_x: 0.3
+                multiline: False
+        
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: 40
+            spacing: 10
+            
+            Button:
+                text: 'Unión'
+                on_press: root.parent.controller.operar_conjuntos('union')
+            
+            Button:
+                text: 'Intersección'
+                on_press: root.parent.controller.operar_conjuntos('interseccion')
+            
+            Button:
+                text: 'Diferencia'
+                on_press: root.parent.controller.operar_conjuntos('diferencia')
+        
+        Label:
+            id: resultado_conjuntos
+            text: 'Resultado aparecerá aquí'
+            size_hint_y: None
+            height: 30
+            color: 0, 0, 1, 1
+    
+    # Sección de Polinomios
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint_y: 0.4
+        spacing: 10
+        
+        Label:
+            text: 'OPERACIONES CON POLINOMIOS'
+            font_size: 18
+            size_hint_y: None
+            height: 30
+            color: 0, 0, 0, 1
+        
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: 40
+            spacing: 10
+            
+            Label:
+                text: 'Polinomio A:'
+                size_hint_x: 0.2
+                color: 0, 0, 0, 1
+            
+            TextInput:
+                id: polinomio_a
+                hint_text: 'Coeficientes: 1,2,3'
+                size_hint_x: 0.3
+                multiline: False
+            
+            Label:
+                text: 'Polinomio B:'
+                size_hint_x: 0.2
+                color: 0, 0, 0, 1
+            
+            TextInput:
+                id: polinomio_b
+                hint_text: 'Coeficientes: 2,1,4'
+                size_hint_x: 0.3
+                multiline: False
+        
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: 40
+            spacing: 10
+            
+            Button:
+                text: 'Sumar'
+                on_press: root.parent.controller.operar_polinomios('sumar')
+            
+            Button:
+                text: 'Evaluar A(x=2)'
+                on_press: root.parent.controller.operar_polinomios('evaluar')
+        
+        Label:
+            id: resultado_polinomios
+            text: 'Resultado aparecerá aquí'
+            size_hint_y: None
+            height: 30
+            color: 0, 0, 1, 1
+    
+    # Botón de salida
+    Button:
+        text: 'Salir'
+        size_hint_y: None
+        height: 40
+        on_press: app.stop()
