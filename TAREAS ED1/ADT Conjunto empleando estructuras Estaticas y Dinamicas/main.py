@@ -1,29 +1,24 @@
-from conjunto_estatico import ConjuntoEstatico
-from conjunto_dinamico import ConjuntoDinamico
+from polinomio_estatico import PolinomioEstatico
+from polinomio_dinamico import PolinomioDinamico
 
-def probar_conjunto(conjunto, nombre):
-    print(f"\n=== Probando {nombre} ===")
+def main():
+    print("==== PRUEBAS DE POLINOMIOS ====")
 
-    conjunto.agregar(10)
-    conjunto.agregar(20)
-    conjunto.agregar(30)
-    conjunto.agregar(20)  # duplicado
+    # Polinomio Estático
+    pe = PolinomioEstatico()
+    pe.insertar(3, 2)  # 3x^2
+    pe.insertar(2, 1)  # 2x^1
+    pe.insertar(5, 0)  # 5
+    print("Polinomio Estático:", pe.mostrar())
+    print("Evaluar en x=2:", pe.evaluar(2))
 
-    print("Elementos iniciales:", conjunto.get_elementos())
-    print("Tamaño:", conjunto.get_tamaño())
-
-    conjunto.eliminar(20)
-    print("Después de eliminar 20:", conjunto.get_elementos())
-    print("Tamaño:", conjunto.get_tamaño())
-
-    conjunto.set_elementos([5, 15, 25])
-    print("Después de set_elementos:", conjunto.get_elementos())
-    print("Tamaño:", conjunto.get_tamaño())
-
+    # Polinomio Dinámico
+    pd = PolinomioDinamico()
+    pd.insertar(4, 3)  # 4x^3
+    pd.insertar(1, 1)  # 1x^1
+    pd.insertar(7, 0)  # 7
+    print("Polinomio Dinámico:", pd.mostrar())
+    print("Evaluar en x=2:", pd.evaluar(2))
 
 if __name__ == "__main__":
-    ce = ConjuntoEstatico(5)
-    cd = ConjuntoDinamico()
-
-    probar_conjunto(ce, "Conjunto Estático")
-    probar_conjunto(cd, "Conjunto Dinámico")
+    main()
