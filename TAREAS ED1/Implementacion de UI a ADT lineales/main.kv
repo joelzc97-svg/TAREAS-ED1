@@ -59,15 +59,15 @@
             
             Button:
                 text: 'Unión'
-                on_press: root.parent.controller.operar_conjuntos('union')
+                on_press: app.controller.operar_conjuntos('union')
             
             Button:
                 text: 'Intersección'
-                on_press: root.parent.controller.operar_conjuntos('interseccion')
+                on_press: app.controller.operar_conjuntos('interseccion')
             
             Button:
                 text: 'Diferencia'
-                on_press: root.parent.controller.operar_conjuntos('diferencia')
+                on_press: app.controller.operar_conjuntos('diferencia')
         
         Label:
             id: resultado_conjuntos
@@ -125,11 +125,11 @@
             
             Button:
                 text: 'Sumar'
-                on_press: root.parent.controller.operar_polinomios('sumar')
+                on_press: app.controller.operar_polinomios('sumar')
             
             Button:
                 text: 'Evaluar A(x=2)'
-                on_press: root.parent.controller.operar_polinomios('evaluar')
+                on_press: app.controller.operar_polinomios('evaluar')
         
         Label:
             id: resultado_polinomios
@@ -144,3 +144,4 @@
         size_hint_y: None
         height: 40
         on_press: app.stop()
+
