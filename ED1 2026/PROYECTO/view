@@ -1,0 +1,75 @@
+import customtkinter as ctk
+from tkinter import ttk
+
+ctk.set_appearance_mode("dark")
+ctk.set_default_color_theme("blue")
+
+class EstudianteView(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+        self.title("Gestión de Estudiantes - INF220")
+        self.geometry("1100x600")
+
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_rowconfigure(0, weight=1)
+
+        # --- PANEL LATERAL ---
+        self.sidebar = ctk.CTkFrame(self, width=280, corner_radius=15)
+        self.sidebar.grid(row=0, column=0, padx=20, pady=20, sticky="nsew")
+
+        ctk.CTkLabel(self.sidebar, text="OPERACIONES", font=("Roboto", 20, "bold")).pack(pady=20)
+
+        self.ent_id = ctk.CTkEntry(self.sidebar, placeholder_text="ID Estudiante")
+        self.ent_id.pack(padx=20, pady=10, fill="x")
+
+        self.ent_nombre = ctk.CTkEntry(self.sidebar, placeholder_text="Nombre")
+        self.ent_nombre.pack(padx=20, pady=10, fill="x")
+
+        self.ent_apellido = ctk.CTkEntry(self.sidebar, placeholder_text="Apellido")
+        self.ent_apellido.pack(padx=20, pady=10, fill="x")
+
+        self.ent_notas = ctk.CTkEntry(self.sidebar, placeholder_text="Notas (ej: 51, 80, 40)")
+        self.ent_notas.pack(padx=20, pady=10, fill="x")
+
+        self.btn_inscribir = ctk.CTkButton(self.sidebar, text="Inscribir", fg_color="#28a745", hover_color="#218838")
+        self.btn_inscribir.pack(padx=20, pady=15, fill="x")
+
+        self.btn_ver_notas = ctk.CTkButton(self.sidebar, text="Ver Notas por ID", fg_color="#17a2b8", hover_color="#138496")
+        self.btn_ver_notas.pack(padx=20, pady=5, fill="x")
+
+        self.btn_eliminar = ctk.CTkButton(self.sidebar, text="Dar de Baja", fg_color="#dc3545", hover_color="#c82333")
+        self.btn_eliminar.pack(padx=20, pady=5, fill="x")
+
+        # --- PANEL PRINCIPAL ---
+        self.main_frame = ctk.CTkFrame(self, corner_radius=15)
+        self.main_frame.grid(row=0, column=1, padx=(0, 20), pady=20, sticky="nsew")
+
+        ctk.CTkLabel(self.main_frame, text="LISTADO DE NOTAS", font=("Roboto", 18)).pack(pady=10)
+
+        # Configuración de la tabla
+        style = ttk.Style()
+        style.theme_use("clam")
+        style.configure("Treeview", background="#2b2b2b", foreground="white", fieldbackground="#2b2b2b", borderwidth=0)
+        style.configure("Treeview.Heading", background="#333333", foreground="white", relief="flat")
+        
+        # Definir columnas incluyendo ESTADO
+        self.tabla = ttk.Treeview(self.main_frame, columns=("ID", "Nombre", "Apellido", "Promedio", "Estado"), show='headings')
+        for col in ("ID", "Nombre", "Apellido", "Promedio", "Estado"):
+            self.tabla.heading(col, text=col)
+            self.tabla.column(col, anchor="center")
+        
+        # CONFIGURACIÓN DE COLORES (TAGS)
+        self.tabla.tag_configure('aprobado', background='#28a745', foreground='white')
+        self.tabla.tag_configure('reprobado', background='#dc3545', foreground='white')
+        
+        self.tabla.pack(padx=20, pady=20, fill="both", expand=True)
+
+        self.btn_reporte = ctk.CTkButton(self.main_frame, text="Actualizar Tabla")
+        self.btn_reporte.pack(pady=15)
+
+    def obtener_datos(self):
+        return self.ent_id.get(), self.ent_nombre.get(), self.ent_apellido.get(), self.ent_notas.get()
+
+    def limpiar_campos(self):
+        for entry in [self.ent_id, self.ent_nombre, self.ent_apellido, self.ent_notas]:
+            entry.delete(0, 'end')
