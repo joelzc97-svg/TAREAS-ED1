@@ -1,0 +1,72 @@
+from tkinter import messagebox
+
+class EstudianteController:
+    def __init__(self, modelo, vista):
+        self.modelo = modelo
+        self.vista = vista
+        
+        # Eventos
+        self.vista.btn_inscribir.configure(command=self.inscribir)
+        self.vista.btn_eliminar.configure(command=self.eliminar)
+        self.vista.btn_reporte.configure(command=self.actualizar_tabla)
+        self.vista.btn_ver_notas.configure(command=self.ver_notas)
+
+    def inscribir(self):
+        id_e, nom, ape, notas_str = self.vista.obtener_datos()
+        if not id_e or not nom:
+            messagebox.showwarning("Atención", "ID y Nombre son obligatorios.")
+            return
+        
+        try:
+            notas = [float(n.strip()) for n in notas_str.split(",")] if notas_str else []
+            self.modelo.inscribir(id_e, nom, ape, notas)
+            messagebox.showinfo("Éxito", f"Estudiante {nom} registrado.")
+            self.vista.limpiar_campos()
+            self.actualizar_tabla()
+        except ValueError:
+            messagebox.showerror("Error", "Formato de notas inválido.")
+
+    def ver_notas(self):
+        id_e = self.vista.ent_id.get()
+        est = self.modelo.buscar(id_e)
+        if est:
+            notas_txt = ", ".join(map(str, est.calificaciones)) if est.calificaciones else "Sin notas"
+            messagebox.showinfo(f"Notas de {est.nombre}", f"Calificaciones: [{notas_txt}]")
+        else:
+            messagebox.showerror("Error", "No encontrado.")
+
+    def eliminar(self):
+        id_e = self.vista.ent_id.get()
+        if self.modelo.dar_de_baja(id_e):
+            messagebox.showinfo("Éxito", "Eliminado correctamente.")
+            self.actualizar_tabla()
+        else:
+            messagebox.showerror("Error", "ID no existente.")
+
+    def actualizar_tabla(self):
+        # Limpiar registros previos
+        for item in self.vista.tabla.get_children():
+            self.vista.tabla.delete(item)
+        
+        actual = self.modelo.cabeza
+        while actual:
+            # Cálculo de promedio
+            promedio = sum(actual.calificaciones) / len(actual.calificaciones) if actual.calificaciones else 0
+            
+            # Lógica de Estado y Color (Tag)
+            if promedio >= 51:
+                estado = "APROBADO"
+                tag_color = 'aprobado'
+            else:
+                estado = "REPROBADO"
+                tag_color = 'reprobado'
+            
+            # Inserción con el tag correspondiente
+            self.vista.tabla.insert("", "end", 
+                                    values=(actual.id, 
+                                            actual.nombre, 
+                                            actual.apellido, 
+                                            f"{promedio:.2f}", 
+                                            estado),
+                                    tags=(tag_color,))
+            actual = actual.siguiente
