@@ -46,26 +46,21 @@ class EstudianteView(ctk.CTk):
 
         ctk.CTkLabel(self.main_frame, text="LISTADO DE NOTAS", font=("Roboto", 18)).pack(pady=10)
 
-        # Configuración de la tabla
         style = ttk.Style()
         style.theme_use("clam")
         style.configure("Treeview", background="#2b2b2b", foreground="white", fieldbackground="#2b2b2b", borderwidth=0)
         style.configure("Treeview.Heading", background="#333333", foreground="white", relief="flat")
         
-        # Definir columnas incluyendo ESTADO
         self.tabla = ttk.Treeview(self.main_frame, columns=("ID", "Nombre", "Apellido", "Promedio", "Estado"), show='headings')
         for col in ("ID", "Nombre", "Apellido", "Promedio", "Estado"):
             self.tabla.heading(col, text=col)
             self.tabla.column(col, anchor="center")
         
-        # CONFIGURACIÓN DE COLORES (TAGS)
         self.tabla.tag_configure('aprobado', background='#28a745', foreground='white')
         self.tabla.tag_configure('reprobado', background='#dc3545', foreground='white')
         
+        # La tabla ahora ocupa todo el espacio restante con expand=True
         self.tabla.pack(padx=20, pady=20, fill="both", expand=True)
-
-        self.btn_reporte = ctk.CTkButton(self.main_frame, text="Actualizar Tabla")
-        self.btn_reporte.pack(pady=15)
 
     def obtener_datos(self):
         return self.ent_id.get(), self.ent_nombre.get(), self.ent_apellido.get(), self.ent_notas.get()
