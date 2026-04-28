@@ -1,3 +1,6 @@
+import json
+import os
+
 class Estudiante:
     def __init__(self, id_est, nombre, apellido, calificaciones):
         self.id = id_est
@@ -7,13 +10,16 @@ class Estudiante:
         self.siguiente = None
 
 class GestionEstudiantes:
-    def __init__(self):
+    def __init__(self, archivo="estudiantes.txt"):
         self.cabeza = None
+        self.archivo = archivo
+        self.cargar_desde_archivo()
 
     def inscribir(self, id_est, nombre, apellido, calificaciones):
         nuevo = Estudiante(id_est, nombre, apellido, calificaciones)
         nuevo.siguiente = self.cabeza
         self.cabeza = nuevo
+        self.guardar_en_archivo()
 
     def dar_de_baja(self, id_est):
         actual = self.cabeza
@@ -24,6 +30,7 @@ class GestionEstudiantes:
                     anterior.siguiente = actual.siguiente
                 else:
                     self.cabeza = actual.siguiente
+                self.guardar_en_archivo()
                 return True
             anterior = actual
             actual = actual.siguiente
@@ -36,3 +43,31 @@ class GestionEstudiantes:
                 return actual
             actual = actual.siguiente
         return None
+
+    def guardar_en_archivo(self):
+        datos = []
+        actual = self.cabeza
+        while actual:
+            datos.append({
+                "id": actual.id,
+                "nombre": actual.nombre,
+                "apellido": actual.apellido,
+                "calificaciones": actual.calificaciones
+            })
+            actual = actual.siguiente
+        with open(self.archivo, "w") as f:
+            json.dump(datos, f, indent=4)
+
+    def cargar_desde_archivo(self):
+        if not os.path.exists(self.archivo):
+            return
+        try:
+            with open(self.archivo, "r") as f:
+                datos = json.load(f)
+            self.cabeza = None
+            for d in reversed(datos):
+                nuevo = Estudiante(d["id"], d["nombre"], d["apellido"], d["calificaciones"])
+                nuevo.siguiente = self.cabeza
+                self.cabeza = nuevo
+        except:
+            pass
