@@ -1,0 +1,9 @@
+from model import GestionEstudiantes
+from view import EstudianteView
+from controller import EstudianteController
+
+if __name__ == "__main__":
+    modelo = GestionEstudiantes()
+    vista = EstudianteView()
+    app = EstudianteController(modelo, vista)
+    vista.mainloop()
